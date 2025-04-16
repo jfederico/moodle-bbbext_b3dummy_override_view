@@ -20,6 +20,7 @@ use renderable;
 use renderer_base;
 use stdClass;
 use templatable;
+use mod_bigbluebuttonbn\instance;
 
 /**
  * View Page template renderable.
@@ -30,7 +31,30 @@ use templatable;
  * @author    Jesus Federico  (jesus [at] blindsidenetworks [dt] com)
  */
 class view implements renderable, templatable {
+
+    /** @var instance The instance being rendered */
+    protected $instance;
+
+    /**
+     * Constructor for the View Page.
+     *
+     * @param instance $instance
+     */
+    public function __construct(instance $instance) {
+        $this->instance = $instance;
+    }
+
+    /**
+     * Export the content required to render the template.
+     *
+     * @param renderer_base $output
+     * @return stdClass
+     */
     public function export_for_template(renderer_base $output): stdClass {
-        return (object) ['message' => 'Hello from b3dummy_override_view!'];
+        return (object) [
+            'message' => 'Hello from b3dummy_override_view::renderer!',
+            'meetingname' => $this->instance->get_meeting_name(),
+            'description' => $this->instance->get_meeting_description(true),
+        ];
     }
 }

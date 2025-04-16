@@ -23,9 +23,10 @@
  * @author    Jesus Federico  (jesus [at] blindsidenetworks [dt] com)
  */
 
-use bbbext_b3dummy_override_view\output\view;
 use mod_bigbluebuttonbn\instance;
 use mod_bigbluebuttonbn\plugin;
+use mod_bigbluebuttonbn\local\proxy\bigbluebutton_proxy;
+use bbbext_b3dummy_override_view\output\view;
 
 require_once(__DIR__ . '/../../../../config.php');
 
@@ -42,18 +43,30 @@ $bigbluebuttonbn = $instance->get_instance_data();
 
 require_login($course, true);
 
-$PAGE->set_url(new moodle_url('/mod/bigbluebuttonbn/extension/b3dummy_override_view/view.php'));
+// Require a working server.
+bigbluebutton_proxy::require_working_server($instance);
 
-$PAGE->set_context($context);
-$PAGE->set_title(get_string('pluginname', 'bbbext_b3dummy_override_view'));
+// Mark viewed by user (if required).
+$completion = new completion_info($course);
+$completion->set_module_viewed($cm);
+
+// Print the page header.
+$PAGE->set_url($instance->get_view_url());
+$PAGE->set_title($cm->name);
+$PAGE->set_cacheable(false);
+$PAGE->set_heading($course->fullname);
+
+// Output starts.
+$renderer = $PAGE->get_renderer('bbbext_b3dummy_override_view');
+$renderedinfo = $renderer->render(new view($instance));
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->heading('✅ b3dummy_override_view loaded successfully');
+echo html_writer::tag('h3', s($instance->get_meeting_name()), []);
+echo html_writer::tag('h5', s($instance->get_meeting_description()), []);
+
 echo html_writer::div('Hello from b3dummy_override_view!', 'alert alert-success');
 
-$renderer = $PAGE->get_renderer('bbbext_b3dummy_override_view');
-$renderable = new view($instance);
-echo $renderer->render($renderable);
+echo $renderedinfo;
 
 echo $OUTPUT->footer();
