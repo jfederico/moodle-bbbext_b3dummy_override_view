@@ -16,12 +16,10 @@
 
 namespace bbbext_b3dummy_override_view\output;
 
-use renderable;
 use renderer_base;
 use stdClass;
-use templatable;
 use mod_bigbluebuttonbn\instance;
-use mod_bigbluebuttonbn_mod_form;
+use mod_bigbluebuttonbn\output\view_page as base_view_page;
 
 /**
  * View Page template renderable.
@@ -31,7 +29,7 @@ use mod_bigbluebuttonbn_mod_form;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @author    Jesus Federico  (jesus [at] blindsidenetworks [dt] com)
  */
-class view_page extends \mod_bigbluebuttonbn\output\view_page {
+class view_page extends base_view_page {
 
     /** @var instance The instance being rendered */
     protected $instance;
