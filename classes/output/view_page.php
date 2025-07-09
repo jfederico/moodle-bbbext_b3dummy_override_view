@@ -46,10 +46,10 @@ class view_page extends base_view_page {
     /**
      * Export the content required to render the template.
      *
-     * @param renderer_base $output
+     * @param mixed $renderer The renderer instance (matches parent signature).
      * @return stdClass
      */
-    public function export_for_template(renderer_base $output): stdClass {
+    public function export_for_template($renderer): \stdClass {
         return (object) [
             'message' => 'Hello from b3dummy_override_view::renderer!',
             'meetingname' => $this->instance->get_meeting_name(),

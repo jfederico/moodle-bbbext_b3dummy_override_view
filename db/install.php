@@ -15,15 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * English language pack for BigBlueButton B3Dummy for Override View
+ * Install script for BigBlueButton B3Dummy for Override View
+ *
+ * Documentation: {@link https://moodledev.io/docs/guides/upgrade}
  *
  * @package    bbbext_b3dummy_override_view
- * @category   string
- * @copyright  2025 YOUR NAME <your@email.com>
+ * @copyright  2025 Blindside Networks Inc
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author     Jesus Federico  (jesus [at] blindsidenetworks [dt] com)
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$string['pluginname'] = 'BigBlueButton B3Dummy for Override View';
-$string['setting'] = 'Setting';
+/**
+ * Executed on installation of BigBlueButton B3Dummy for Override View
+ *
+ * @return bool
+ */
+function xmldb_bbbext_b3dummy_override_view_install() {
+    set_config('disabled', 1, 'bbbext_b3dummy_override_view');
+}
