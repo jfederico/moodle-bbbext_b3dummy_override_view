@@ -1,34 +1,35 @@
 # b3dummy_override_view Extension Subplugin for BigBlueButtonBN
 
-This extension subplugin for the BigBlueButtonBN Moodle activity module demonstrates how to override the default view page using the new extension and output override system.
+This extension subplugin for the BigBlueButtonBN Moodle activity module demonstrates how to extend the default view page using the new extension add-on system.
 
 ## Features
-- **View Page Override Only:**
-  - Provides a custom implementation for the BigBlueButtonBN activity view page by supplying:
-    - `/classes/output/view_page.php` that extends `\mod_bigbluebuttonbn\output\view_page`
-    - `/templates/view_page.mustache` as the template for the custom view page
+- Provide optional, pluggable view add-ons that the core view renders, without replacing the core view class or template.
 
 ## How It Works
-- The BigBlueButtonBN extension system will dynamically discover and use the first enabled subplugin that provides a `/classes/output/view_page.php` class extending the core view page.
-- The custom `view_page.php` class should implement any custom logic needed for the view, and the corresponding `view_page.mustache` template will be used for rendering.
-- No custom renderer or alternative view logic is provided or required in this subplugin.
+- The BigBlueButtonBN extension system dynamically discovers add-on components implemented by subplugins under `classes/bigbluebuttonbn/view_page_addons/` with matching Mustache templates in `templates/`.
+- Each add-on consists of a PHP class (extending the core view add-on base) and a same-named Mustache template to render its output.
+- No custom renderer or replacement view class/template is required or used in this subplugin.
+
+### Developer note: view add-on components
+When extending the view, provide discrete "add-on" components that the core view will render. Implement both of the following with the same base name:
+
+- A PHP class under `classes/bigbluebuttonbn/view_page_addons/view_page_addon.php` that extends the core view add-on base class (i.e., the core BigBlueButtonBN "view_page_addons" base). This class encapsulates the logic for your add-on block.
+- A Mustache template under `templates/view_page_addon.mustache` with the exact same base name (case-insensitive match of `view_page_addon` → `view_page_addon.mustache`). This template renders the add-on's output.
+
+Both the class and the template are required for the add-on to be discovered and rendered by the view override system.
 
 ## Example Structure
 ```
 mod/bigbluebuttonbn/extension/b3dummy_override_view/
 ├── classes/
-│   └── output/
-│       └── view_page.php       # Extends \mod_bigbluebuttonbn\output\view_page
+│   └── bigbluebuttonbn/
+│       └── view_page_addons/
+│           └── view_page_addon.php   # Extends the core view add-on base class
 ├── templates/
-│   └── view_page.mustache      # Mustache template for the custom view page
+│   └── view_page_addon.mustache      # Mustache template for the add-on (name matches class)
 └── README.md                   # This file
 ```
 
 ## Requirements
 - BigBlueButtonBN for Moodle 5.1 or later with the extension system enabled.
 - Moodle 5.1 or later.
-
-## Author
-Blindside Networks Inc
-
-For more information, see the documentation in the main BigBlueButtonBN plugin or contact the maintainers.
